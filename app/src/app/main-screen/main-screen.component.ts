@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {AnalizerService} from '../analizer.service'
 
 @Component({
   selector: 'app-main-screen',
@@ -11,7 +12,7 @@ export class MainScreenComponent implements OnInit {
   showList = false;
   tokenList = [];
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private analizer: AnalizerService) { }
 
   ngOnInit() {
     this.mainForm = this.formBuilder.group({
@@ -20,13 +21,29 @@ export class MainScreenComponent implements OnInit {
   }
 
   onSubmit() {
-    this.showList= true;
-    this.tokenList = this.textArea.split('');
+    if(this.mainForm.valid){
+      this.showList= true;
+      this.tokenList = [];
+      this.simpleTokenizer(this.mainForm.get('textArea').value);
+      this.analizer.analyze(this.tokenList);
+    }
   }
 
+  simpleTokenizer(array: any) {
+    let lines = this.textArea.split('\n');
+    lines.forEach(line => {
+      if (line !== "") {
+        line.split(' ').forEach(token=>{
+          if (token !== "") {
+          this.tokenList.push(token);
+          }
+        })
+      }
+    });
+  }
 
+  // Getters
   get textArea(): string {
     return this.mainForm.get('textArea').value;
   }
-
 }
