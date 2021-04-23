@@ -24,22 +24,15 @@ export class MainScreenComponent implements OnInit {
     if(this.mainForm.valid){
       this.showList= true;
       this.tokenList = [];
-      this.simpleTokenizer(this.mainForm.get('textArea').value);
+      this.tokenList = this.simpleTokenizer(this.mainForm.get('textArea').value);
       this.analizer.analyze(this.tokenList);
     }
   }
 
-  simpleTokenizer(array: any) {
-    let lines = this.textArea.split('\n');
-    lines.forEach(line => {
-      if (line !== "") {
-        line.split(' ').forEach(token=>{
-          if (token !== "") {
-          this.tokenList.push(token);
-          }
-        })
-      }
-    });
+  simpleTokenizer(text: any) {
+    let regex = new RegExp("[ \n]+")
+    let list = text.split(regex);
+    return list;
   }
 
   // Getters
