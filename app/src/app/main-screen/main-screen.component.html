@@ -7,8 +7,8 @@
 </article>
 <article class="main-list" *ngIf="showList">
   <div *ngFor="let token of tokenList" class="token" >
-    <div class="token-div">{{ token }}</div>
-    <div class="token-div"> - </div>
+    <div class="token-div">{{ token.valor }}</div>
+    <div class="token-div"> {{ token.token }} </div>
   </div>
 </article>
 

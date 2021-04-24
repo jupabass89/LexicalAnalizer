@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {AnalizerService} from '../analizer.service'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AnalizerService } from '../analizer.service'
+import { Lexico } from './Lexico';
 
 @Component({
   selector: 'app-main-screen',
@@ -10,7 +11,7 @@ import {AnalizerService} from '../analizer.service'
 export class MainScreenComponent implements OnInit {
   mainForm: FormGroup;
   showList = false;
-  tokenList = [];
+  tokenList: Array<Lexico>;
 
   constructor(private formBuilder: FormBuilder, private analizer: AnalizerService) { }
 
@@ -21,18 +22,11 @@ export class MainScreenComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.mainForm.valid){
-      this.showList= true;
-      this.tokenList = [];
-      this.tokenList = this.simpleTokenizer(this.mainForm.get('textArea').value);
-      this.analizer.analyze(this.tokenList);
-    }
-  }
+    if (this.mainForm.valid) {
+      this.showList = true;
+      this.tokenList = this.analizer.analyze((this.mainForm.get('textArea').value));
 
-  simpleTokenizer(text: any) {
-    let regex = new RegExp("[ \n]+")
-    let list = text.split(regex);
-    return list;
+    }
   }
 
   // Getters
